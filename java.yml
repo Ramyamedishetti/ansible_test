@@ -1,0 +1,54 @@
+---
+  - name: install and configure the tomcat
+    hosts: localhost
+    gather_facts: false
+    vars:
+      req_java: java-*
+      set_java: java-*
+      TOMCAT_VAR: 10.1.11
+      tomcat_port: 8090
+      tomcat_url: https://downloads.apache.org/tomcat/tomcat-{{TOMCAT_VAR.split('.')[0]}}/v{{TOMCAT_VAR}}/bin/apache-tomcat-{{TOMCAT_VAR}}.tar.gz
+    become: yes
+    tasks: 
+      - name: updating_repos
+        yum: 
+          name: "*"
+          state: latest
+      - name: installing required java
+        yum: 
+          name: "{{req_java}}"
+          state: present
+      - name: finding the jdk version
+        command: java -version
+        register: java_version_outputs
+      - debug: 
+           var: java_version_outputs.stderr.split(" ")[:3]
+      - name: Downloading required tomcat
+        get_url:
+          url: "{{tomcat_url}}"
+          dest: /usr/local
+      - name: untar the file
+        unarchive:
+          src: /usr/local/apache-tomcat-{{TOMCAT_VAR}}.tar.gz
+          dest: /usr/local
+          remote_src: yes
+      - name: renameng tomcat home
+        command: mv /usr/localxdsssssssxx/apache-tomcat-{{TOMCAT_VAR}} /usr/local/latest
+        ignore_errors: true
+      - name: copying a required file to change the port
+        template:
+          src: /usr/local/latest/conf/server.xml.j2
+          dest: /usr/local/latest/conf/server.xml    
+      - name: starting tomcat server
+        shell: nohup /usr/local/latest/bin/startup.sh &
+      - name: status of the tomcat server
+        shell: /usr/local/latest/bin/version.sh
+        register: version_output
+      - debug:
+           var: version_output.stdout_lines[0].split(':')[1].split('/')[1]
+      - debug:
+           msg: 
+            - "{{version_output.stdout_lines[0].split(':')[1].split('/')[1]}}"
+            - "{{inventory_hostname}}"
+      
+

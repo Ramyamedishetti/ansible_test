@@ -1,0 +1,10 @@
+---
+ - name: To terminate the instance
+   hosts: localhost
+   gather_facts: false
+   tasks:
+   - name: terminating the instance
+     amazon.aws.ec2_instance:
+       resource_tags:
+         Name: Test
+       state: terminated

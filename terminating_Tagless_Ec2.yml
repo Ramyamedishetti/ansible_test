@@ -1,0 +1,20 @@
+---
+ - name: getting the info & terminating the instances wihtout tags
+   hosts: localhost
+   gather_facts: false
+   tasks:
+   - name: getting ec2 info
+     amazon.aws.ec2_instances_info:
+      region: us-east-1
+     register: ec2_info
+   - name: dispalying the ec2_info output
+     debug: var=item.tags
+     with_items: "{{ec2_info.instances}}"
+     when: item.tags.keys() | length==0
+   - name: terminating the instances using tags
+     amazon.aws.ec2_instance:
+      instance_ids: item.instance_id
+      state: terminated
+      with_items: "{{ec2_info.instances}}"
+      when: item.tags.keys() | length==0
+

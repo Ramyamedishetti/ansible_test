@@ -1,0 +1,10 @@
+---
+ - name: To start ec2 instance
+   hosts: localhost
+   gather_facts: false 
+   tasks:
+   - name: start the instance
+     amazon.aws.ec2_instance:
+       resource_tags: 
+         Name: Test
+       state: running

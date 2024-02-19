@@ -1,0 +1,14 @@
+---
+  - name: installing & configuring httpd
+    hosts: localhost
+    gather_facts: false
+    become: yes
+    tasks:
+      - name: installing httpd
+        yum: 
+          name: httpd
+          state: present
+      - name: starting httpd service
+        yum: 
+          name: httpd
+          state: started 

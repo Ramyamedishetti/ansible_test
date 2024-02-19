@@ -1,0 +1,20 @@
+---
+ - name: This play is used to create ec2 instance using SGs and tags
+   hosts: localhost
+   connection: local
+   gather_facts: false
+   tasks:
+   - name: creating ec2 instance
+     amazon.aws.ec2_instance: 
+      instance_type: t2.micro
+      image_id: "ami-06ca3ca175f37dd66"
+      count: 3
+      key_name: ansibletest
+      region: us-east-1
+      wait: yes
+      security_group: launch-wizard-1
+      resource_tags:
+        Name: Test
+        ENV: Dev
+      tags:
+        Name: stop_start_terminate

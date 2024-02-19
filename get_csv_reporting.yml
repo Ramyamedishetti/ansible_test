@@ -1,0 +1,19 @@
+---
+ - name: Generating ec2 instances into csv file
+   hosts: localhost
+   connection: local
+   gather_facts: false
+   tasks:
+   - name: report of csv
+     amazon.aws.ec2_instance_info:
+      region: us-east-1
+      filters:
+       "tag:ENV": Dev
+     register: out
+   - name: Using template module & src as jinja2 file
+     template:
+       src: jinj2_file.j2
+       dest: instances_info.csv
+
+
+     

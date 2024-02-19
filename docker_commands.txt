@@ -1,0 +1,28 @@
+docker installation on amazon linux machine
+--> sudo yum update
+--> sudo yum search docker
+--> sudo yum info docker
+--> sudo yum install docker
+--> Enable docker service at AMI boot time:
+      sudo systemctl enable docker.service
+--> Start the Docker service:
+      sudo systemctl start docker.service
+--> Get the docker service status on your AMI instance, run:
+      sudo systemctl status docker.service
+--> docker version
+--> docker ps(process status)
+--> docker run ubuntu/nginx/centos/debian
+--> docker ps -a(stopped docker containers can be seen)
+--> docker rm imageid
+--> docker rmi imagename
+--> docker images
+--> To login docker container we need to use below commands
+    docker run -it ubuntu bash(Interactive terminal - it)
+    docker run -i ubuntu bash(Interactive mode - i)
+--> docker run -d centos sleep 200
+--> docker run redis:4.0(TAG)
+--> If no tag that will considered as latest
+    docker run redis
+--> docker run -d timer
+--> docker attach timer
+

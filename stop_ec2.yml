@@ -1,0 +1,10 @@
+---
+ - name: This play helps to stop the instance
+   hosts: localhost
+   gather_facts: false
+   tasks:
+   - name: stopping the instance
+     amazon.aws.ec2_instance:
+       resource_tags: 
+        Name: Test
+       state: stopped 

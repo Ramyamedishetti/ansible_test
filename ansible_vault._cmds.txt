@@ -1,0 +1,10 @@
+#To encrypt the yml playbook , we can use the below commands 
+   #ansible-vault encrypt display_output.yml
+   #ansible-vault decrypt display_output.yml
+#To change the password of ansible-vault , the following commands to use
+   #ansible-vault rekey display_output.yml
+#To ask the password
+   #ansible-vault encrypt/decrypt display_output.yml --ask-vault-pass
+# To give file as password store
+   #ansible-playbook display_output.yml --vault-id my_pass(file)
+   

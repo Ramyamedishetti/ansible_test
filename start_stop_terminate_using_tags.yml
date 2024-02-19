@@ -1,0 +1,48 @@
+---
+ - name: Starting, stopping & terminating the ec2 instance
+   hosts: localhost
+   gather_facts: false
+   tasks:
+   - name: Info about ec2 instance using ec2_instance_facts
+     amazon.aws.ec2_instance:
+      region: us-east-1
+      filters: 
+        "tag:ENV": Dev
+     register: ec2_info
+     tags:
+      - always
+  #  - name: displaying the outputs of ec2_info
+  #    debug: msg="{{item.instance_id}}"
+  #    with_items: "{{ec2_info.instances}}"
+  #    tags:
+  #     - always
+   - name: stopping the instance using the instance tags
+     amazon.aws.ec2_instance:
+      instance_ids: "{{item.instance_id}}"
+      region: us-east-1
+      state: stopped
+      wait: yes
+     tags:
+       - stopped
+       - never
+     with_items: "{{ec2_info.instances}}"
+   - name: starting the instance using the instance tags
+     amazon.aws.ec2_instance:
+      instance_ids: "{{item.instance_id}}" 
+      region: us-east-1
+      state: started
+      wait: yes
+     tags:
+      - running
+      - never
+     with_items: "{{ec2_info.instances}}"
+   - name: terminating the instance using the instance tags
+     amazon.aws.ec2_instance:
+      instance_ids: "{{item.instance_id}}"
+      region: us-east-1
+      state: terminated
+      wait: yes
+     tags:
+      - terminated
+      - never
+     with_items: "{{ec2_info.instances}}"
