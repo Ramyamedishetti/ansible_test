@@ -1,3 +1,9 @@
+
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+
 resource "aws_subnet" "firstsubnet" {
   vpc_id = aws_vpc.management_zone.id
   cidr_block = "10.0.0.0/17"
@@ -33,6 +39,5 @@ resource "aws_subnet" "fourthsubnet" {
     Name = "subnetD"
   }
 }
-
 
 
